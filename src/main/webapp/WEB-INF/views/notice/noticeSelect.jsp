@@ -17,8 +17,9 @@ ${noticeVO.contents}
 ${noticeVO.regDate}
 ${noticeVO.hit}
 <br>
-<c:forEach items="${noticeVO.noticefiles}" var="vo">
-<img src="../images/${vo.fname}" class="img-rounded" alt="Cinque Terre" style="width: 400px; height: 400px;">
+<c:forEach items="${noticeVO.noticeFilesVOs}" var="vo">
+<img src="../images/${vo.fname}" class="img-rounded" style="width: 400px; height: 400px;">
+${vo.fname}
 </c:forEach>
 
 </body>

@@ -1,6 +1,7 @@
 package com.iu.b1.member;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -23,6 +24,48 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	
+	@GetMapping("memberUpdate")
+	public ModelAndView memberUpdate(MemberVO memberVO, ModelAndView mv, HttpSession session) throws Exception{
+		memberVO = (MemberVO)session.getAttribute("memberVO");
+		mv.addObject("memberVO", memberVO);
+		mv.setViewName("member/memberUpdate");
+		
+		return mv;
+	}
+	
+	@PostMapping("memberUpdate")
+	public ModelAndView memberUpdate(MemberVO memberVO, HttpSession session,MultipartFile files) throws Exception{
+		ModelAndView mv = new ModelAndView();
+		MemberVO memberVO2 = (MemberVO)session.getAttribute("memberVO");
+		memberVO.setPw(memberVO2.getPw());
+		MemberFilesVO memberFilesVO = new MemberFilesVO();
+		memberFilesVO.setFnum(memberVO2.getMemberFilesVO().getFnum());
+		memberVO.setMemberFilesVO(memberFilesVO);
+		memberVO = memberService.memberUpdate(memberVO, files);
+		session.setAttribute("memberVO", memberVO);
+		mv.setViewName("member/Mypage");
+		return mv;
+	}
+	
+	@RequestMapping("IdCheck")
+	public ModelAndView IdCheck(MemberVO memberVO,ModelAndView mv) throws Exception{
+		String result = "사용가능한 아이디";
+		String id = memberVO.getId();
+		Optional<MemberVO> opt = memberService.memberIdCheck(memberVO);
+		if(opt.isPresent()) {
+			result = "중복된 아이디";
+			mv.addObject("result", 1);
+		}else {
+			mv.addObject("result", 0);
+		}
+		System.out.println(id);
+		System.out.println(result);
+		
+		mv.setViewName("common/IdcheckResult");
+		return mv;
+	}
 	
 	@GetMapping("memberJoin")
 	public String memberJoin(Model model) throws Exception{
@@ -110,13 +153,14 @@ public class MemberController {
 	@GetMapping("Mypage")
 	public ModelAndView Mypage(HttpSession session, ModelAndView mv) throws Exception{
 		
-		MemberVO memberVO = new MemberVO();
-		memberVO =(MemberVO)session.getAttribute("memberVO");
+		//MemberVO memberVO = new MemberVO();
+		//memberVO =(MemberVO)session.getAttribute("memberVO");
 		//memberVO = memberService.Mypage(memberVO);
-		List<MemberFilesVO> ar = memberService.Mypage(memberVO);
-		memberVO = memberService.memberLogin(memberVO).get(0);
-		mv.addObject("member", memberVO);
-		mv.addObject("memberfiles", ar);
+		//List<MemberFilesVO> ar = memberService.Mypage(memberVO);
+		//memberVO = memberService.memberLogin(memberVO).get(0);
+		//mv.addObject("member", memberVO);
+		//mv.addObject("memberfiles", ar);
+		
 		mv.setViewName("member/Mypage");
 		
 		return mv;

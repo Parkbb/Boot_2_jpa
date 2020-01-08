@@ -2,17 +2,24 @@ package com.iu.b1.Board;
 
 import java.sql.Date;
 
-import lombok.Getter;
-import lombok.Setter;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
-@Getter
-@Setter
+import lombok.Data;
+
+
+@Data
+@MappedSuperclass
 public class BoardVO {
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int num;
 	private String title;
 	private String writer;
 	private String contents;
-	private Date regDate;
+	private String regDate;
 	private int hit;
 }
