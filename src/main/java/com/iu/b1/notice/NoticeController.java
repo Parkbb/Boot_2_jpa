@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.iu.b1.Board.BoardVO;
+
 @Controller
 @RequestMapping("notice/**")
 public class NoticeController {
@@ -18,7 +20,7 @@ public class NoticeController {
 	
 	@GetMapping("noticeList")
 	public ModelAndView noticeList(ModelAndView mv) throws Exception{
-		List<NoticeVO> ar = noticeService.noticeList();
+		List<BoardVO> ar = noticeService.noticeList();
 		mv.addObject("list", ar);
 		return mv;
 	}
