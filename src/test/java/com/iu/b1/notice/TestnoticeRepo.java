@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
 @SpringBootTest
-@Transactional
+//@Transactional
 class TestnoticeRepo {
 
 	@Autowired
@@ -20,8 +20,14 @@ class TestnoticeRepo {
 
 	@Test
 	void test() throws Exception{
-		NoticeVO noticeVO = noticeRepository.findById(74).get();
-		System.out.println();
+		for (int i = 0; i < 30; i++) {
+			NoticeVO noticeVO = new NoticeVO();
+			noticeVO.setTitle("test");
+			noticeVO.setContents("tst");
+			noticeVO.setWriter("test");
+			noticeRepository.save(noticeVO);
+		}
+		
 	}
 
 }
